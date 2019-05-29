@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorShadeOfBlack</item>
+        <item name="colorPrimaryDark">@color/colorShadeOfBlack</item>
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
+
+
+    <style name="RaitingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:minHeight">10dp</item>
+        <item name="android:maxHeight">10dp</item>
+    </style>
+
+
+
+</resources>
