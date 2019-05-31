@@ -10,7 +10,7 @@ public class MovieDetails {
     public int budget;
     public List<Genre> genres;
     public Object homepage;
-    public int id;
+    public long id;
     public String imdb_id ;
     public String original_language;
     public String original_title;
@@ -20,7 +20,7 @@ public class MovieDetails {
     public List<ProductionCompany> production_companies;
     public List<ProductionCountry> production_countries;
     public String release_date ;
-    public int revenue ;
+    public long revenue ;
     public int runtime ;
     public List<SpokenLanguage> spoken_languages;
     public String status ;
@@ -79,11 +79,11 @@ public class MovieDetails {
         this.homepage = homepage;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -159,11 +159,11 @@ public class MovieDetails {
         this.release_date = release_date;
     }
 
-    public int getRevenue() {
+    public long getRevenue() {
         return revenue;
     }
 
-    public void setRevenue(int revenue) {
+    public void setRevenue(long revenue) {
         this.revenue = revenue;
     }
 

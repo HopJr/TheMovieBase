@@ -47,9 +47,8 @@ public class PopularMovieFragment extends Fragment {
 
 
     public static PopularMovieFragment getInstance() {
-        if (instance == null) {
-            instance = new PopularMovieFragment();
-        }
+        instance = new PopularMovieFragment();
+
         return instance;
     }
 

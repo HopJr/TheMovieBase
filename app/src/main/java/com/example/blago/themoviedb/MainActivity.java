@@ -1,36 +1,36 @@
 package com.example.blago.themoviedb;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.opengl.Visibility;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ActionBarContextView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.blago.themoviedb.Account.Account;
 import com.example.blago.themoviedb.Adapter.ViewPagerAdapter;
+import com.example.blago.themoviedb.LogIn.LogInActivity;
 import com.example.blago.themoviedb.MovieModel.Result;
 import com.example.blago.themoviedb.MovieModel.SearchMovie;
 import com.example.blago.themoviedb.Retrofit.NetworkConstants;
 import com.example.blago.themoviedb.Retrofit.RetrofitClient;
 import com.example.blago.themoviedb.Retrofit.TMDBApi;
-import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.util.ArrayList;
 
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
     private TextView txt_app_name;
+    private NavigationView nav_view;
     private EditText edit_text_search;
     private RelativeLayout layout;
     private ImageButton img_search, img_btn_back;
@@ -55,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable;
     TMDBApi mService;
     Retrofit retrofit;
+    private Account mAccount;
+    SharedPreferences sp;
+    SharedPreferences.Editor mEditor;
+
 
 
     @Override
@@ -69,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mEditor = sp.edit();
+        mAccount = new Account();
+        mAccount.setId(sp.getLong("id",0));
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -78,6 +87,19 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
+        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        nav_view.setItemIconTintList(null);
+        if(mAccount.getId() == 0){
+            nav_view.getMenu().findItem(R.id.nav_login).setVisible(true);
+            nav_view.getMenu().findItem(R.id.nav_my_profile).setVisible(false);
+            nav_view.getMenu().findItem(R.id.nav_logout).setVisible(false);
+            nav_view.getMenu().findItem(R.id.nav_favorite).setVisible(false);
+        }else{
+            nav_view.getMenu().findItem(R.id.nav_login).setVisible(false);
+            nav_view.getMenu().findItem(R.id.nav_my_profile).setVisible(true);
+            nav_view.getMenu().findItem(R.id.nav_logout).setVisible(true);
+            nav_view.getMenu().findItem(R.id.nav_favorite).setVisible(true);
+        }
         layout = (RelativeLayout) findViewById(R.id.relative_layout);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         img_btn_back = (ImageButton) findViewById(R.id.img_btn_back);
@@ -131,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                             .subscribe(new Consumer<SearchMovie>() {
                                 @Override
                                 public void accept(SearchMovie searchMovie) throws Exception {
-                                    ArrayList <Result> list = new ArrayList<>();
+                                    ArrayList<Result> list = new ArrayList<>();
                                     list.addAll(searchMovie.getResults());
                                     Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                                     intent.putExtra("resoult", list);
@@ -152,5 +174,70 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_now_playing: {
+                        switchPage(item);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    }
+                    case R.id.nav_popular: {
+                        switchPage(item);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    }
+                    case R.id.nav_top_rated: {
+                        switchPage(item);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    }
+                    case R.id.nav_upcoming: {
+                        switchPage(item);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    }
+                    case R.id.nav_login: {
+                        Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    }
+                    case R.id.nav_favorite: {
+                        Intent intent = new Intent(MainActivity.this, FavoriteMoviesActivity.class);
+                        startActivity(intent);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    }
+                    case R.id.nav_logout: {
+                        mEditor.clear();
+                        mEditor.commit();
+                        nav_view.getMenu().findItem(R.id.nav_login).setVisible(true);
+                        nav_view.getMenu().findItem(R.id.nav_my_profile).setVisible(false);
+                        nav_view.getMenu().findItem(R.id.nav_logout).setVisible(false);
+                        nav_view.getMenu().findItem(R.id.nav_favorite).setVisible(false);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    }
+                    case R.id.nav_my_profile: {
+                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                        startActivity(intent);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+
+    }
+
+    private void switchPage(MenuItem item) {
+        for (int i = 0; i < adapter.getFragmentTittle().size(); i++) {
+            if (item.getTitle().toString().equalsIgnoreCase(adapter.getFragmentTittle().get(i))) {
+                viewPager.setCurrentItem(i);
+            }
+        }
     }
 }

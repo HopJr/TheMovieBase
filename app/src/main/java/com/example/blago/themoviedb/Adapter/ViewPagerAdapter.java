@@ -18,6 +18,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+    public List<String> getFragmentTittle() {
+        return fragmentTittle;
+    }
+
     @Override
     public Fragment getItem(int i) {
         return fragmentList.get(i);

@@ -50,9 +50,7 @@ public class UpcomingMovieFragment extends Fragment {
 
 
     public static UpcomingMovieFragment getInstance() {
-        if(instance == null) {
-            instance = new UpcomingMovieFragment();
-        }
+        instance = new UpcomingMovieFragment();
         return instance;
     }
 
@@ -60,7 +58,8 @@ public class UpcomingMovieFragment extends Fragment {
         compositeDisposable = new CompositeDisposable();
         Retrofit retrofit = RetrofitClient.getInstance();
         mService = retrofit.create(TMDBApi.class);
-        list = new ArrayList<>();    }
+        list = new ArrayList<>();
+    }
 
 
     @Override
@@ -85,8 +84,8 @@ public class UpcomingMovieFragment extends Fragment {
                     @Override
                     public void accept(MovieModelUpcoming movieModelUpcoming) throws Exception {
                         list.addAll(movieModelUpcoming.getResults());
-                        for(int i = 0; i<list.size(); i++){
-                            if(list.get(i).getPoster_path() == null){
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).getPoster_path() == null) {
                                 list.remove(i);
                             }
                         }
@@ -108,10 +107,10 @@ public class UpcomingMovieFragment extends Fragment {
     }
 
     private void setAdapter() {
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new TopRatedAdapter(getContext(), list);
             recyclerView.setAdapter(adapter);
-        }else {
+        } else {
             adapter.notifyDataSetChanged();
         }
     }

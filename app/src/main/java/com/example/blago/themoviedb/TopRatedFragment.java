@@ -2,6 +2,8 @@ package com.example.blago.themoviedb;
 
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.blago.themoviedb.Adapter.TopRatedAdapter;
@@ -44,15 +47,14 @@ public class TopRatedFragment extends Fragment {
     private TopRatedAdapter adapter;
     private GridLayoutManager mLinearLayoutManager;
     private boolean loading = true;
+    private ProgressBar progress_bar;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
 
 
     static TopRatedFragment instance;
 
     public static TopRatedFragment getInstance() {
-        if(instance == null) {
-            instance = new TopRatedFragment();
-        }
+        instance = new TopRatedFragment();
         return instance;
     }
 
@@ -89,10 +91,14 @@ public class TopRatedFragment extends Fragment {
                     public void accept(MovieModelTopRated movieModelTopRated) throws Exception {
                         list.addAll(movieModelTopRated.getResults());
                         setAdapter();
+                        progress_bar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(getContext(), "Unable to connect to the server", Toast.LENGTH_LONG).show();
+                        progress_bar.setVisibility(View.GONE);
                     }
                 }));
     }
@@ -102,13 +108,17 @@ public class TopRatedFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        progress_bar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        Drawable progressDrawable = progress_bar.getIndeterminateDrawable().mutate();
+        progressDrawable.setColorFilter(Color.parseColor("#263248"), android.graphics.PorterDuff.Mode.SRC_IN);
+        progress_bar.setProgressDrawable(progressDrawable);
     }
 
     private void setAdapter() {
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new TopRatedAdapter(getContext(), list);
             recyclerView.setAdapter(adapter);
-        }else {
+        } else {
             adapter.notifyDataSetChanged();
         }
     }

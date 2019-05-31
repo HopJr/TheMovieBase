@@ -108,7 +108,7 @@ public class MovieDetailsActivity extends YouTubeBaseActivity {
     private void getParacable() {
         Result result = new Result();
         result = getIntent().getParcelableExtra("result");
-        int id = (int) result.getId();
+        long id = result.getId();
 
         compositeDisposable.add(mService.getMovieDetails(id, NetworkConstants.API_KEY, NetworkConstants.LANGUAGE)
                 .subscribeOn(Schedulers.io())

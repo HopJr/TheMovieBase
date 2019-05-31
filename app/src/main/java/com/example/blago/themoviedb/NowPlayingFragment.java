@@ -48,9 +48,8 @@ public class NowPlayingFragment extends Fragment {
 
 
     public static NowPlayingFragment getInstance() {
-        if(instance==null) {
-            instance = new NowPlayingFragment();
-        }
+        instance = new NowPlayingFragment();
+
 
         return instance;
     }
@@ -82,8 +81,8 @@ public class NowPlayingFragment extends Fragment {
                     @Override
                     public void accept(MovieModelNowPlaying movieModelNowPlaying) throws Exception {
                         list.addAll(movieModelNowPlaying.getResults());
-                        for(int i = 0; i<list.size(); i++){
-                            if(list.get(i).getPoster_path() == null){
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).getPoster_path() == null) {
                                 list.remove(i);
                             }
                         }
@@ -148,7 +147,5 @@ public class NowPlayingFragment extends Fragment {
 
             }
         }));
-
     }
-
 }

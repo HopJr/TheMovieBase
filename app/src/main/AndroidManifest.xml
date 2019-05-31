@@ -23,6 +23,9 @@
         </activity>
         <activity android:name=".MovieDetailsActivity"></activity>
         <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".LogIn.LogInActivity"></activity>
+        <activity android:name=".FavoriteMoviesActivity"></activity>
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

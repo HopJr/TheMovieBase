@@ -147,6 +147,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:menu="@menu/menu"
+        android:paddingTop="10dp"
+        app:headerLayout="@layout/header_layout"
+        app:itemTextColor="@color/colorShadeOfBlack"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme" />
 

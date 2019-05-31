@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/movies">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/nav_top_rated"
+                    android:title="@string/top_rated"
+                    android:icon="@drawable/ic_stars_black_24dp"/>
+                <item
+                    android:id="@+id/nav_upcoming"
+                    android:icon="@drawable/ic_stars_black_24dp"
+                    android:title="@string/upcoming" />
+                <item
+                    android:id="@+id/nav_now_playing"
+                    android:icon="@drawable/ic_stars_black_24dp"
+                    android:title="@string/now_playing" />
+                <item
+                    android:id="@+id/nav_popular"
+                    android:icon="@drawable/ic_stars_black_24dp"
+                    android:title="@string/popular" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/account">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/nav_my_profile"
+                    android:title="@string/profile" />
+                <item
+                    android:id="@+id/nav_favorite"
+                    android:title="@string/favoriteMovies" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:title="@string/logout" />
+
+                <item
+                    android:id="@+id/nav_login"
+                    android:title="@string/login"
+                    android:icon="@drawable/ic_round_account"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>
